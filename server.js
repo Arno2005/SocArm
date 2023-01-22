@@ -1,3 +1,5 @@
+//Configurion env variables
+
 if(process.env.NODE_ENV !== 'production'){
 	const dotenv = require('dotenv');
 	dotenv.config();
@@ -7,7 +9,12 @@ var express = require('express');
 var bcrypt = require('bcrypt');
 var expressLayouts = require('express-ejs-layouts');
 
+//Add routes
+
 var indexRouter = require('./routes/routes');
+var usersRouter = require('./routes/user');
+
+
 
 var app = express();
 
@@ -18,8 +25,17 @@ app.set("layout", "layouts/layout");
 app.use(express.json());
 app.use(expressLayouts);
 app.use(express.static('public'));
-app.use('/', indexRouter);
 
+//Set Routees
+app.use('/', indexRouter);
+app.use('/user', usersRouter);
+
+//Error 404
+app.get('*', function(req, res){
+    res.render('not_found');
+});
+
+//Database Connection
 var mongoose = require("mongoose");
 mongoose.connect(process.env.DATABASE_URL, {
 	useNewUrlParser: true, 
