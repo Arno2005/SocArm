@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
 });
 
 //Setting Unique error with custom message
-userSchema.plugin(uniqueValidator, { message: 'This {PATH} is already being used.' });
+userSchema.plugin(uniqueValidator, { message: 'That {PATH} is already being used.' });
 
 //function becore user is created
 //hashing password

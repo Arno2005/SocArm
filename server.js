@@ -33,14 +33,6 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 
-//Cookies test
-app.get('/set-cookies', (req, res) =>{
-
-	res.cookie('userGet', "This is a test to see if the cookies work");
-	res.send("cookies saved");
-
-})
-
 //Error 404
 app.get('*', function(req, res){
     res.render('not_found');
