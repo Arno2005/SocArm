@@ -1,1 +1,10 @@
-<h1>Display All The Users</h1>
+<h1 class="mb-5">Display All The Users</h1>
+<div class="container mb-3">
+    <% users.forEach(user =>{ %>
+        <h3><%= user.username %></h3>
+        <h4><%= user.email %></h4>
+        <hr>
+    <% }) %>
+    
+</div>
+ 

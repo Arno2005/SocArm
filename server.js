@@ -1,4 +1,4 @@
-//Configurion env variables
+//Configuring env variables
 
 if(process.env.NODE_ENV !== 'production'){
 	const dotenv = require('dotenv');
@@ -6,8 +6,9 @@ if(process.env.NODE_ENV !== 'production'){
 }
 
 var express = require('express');
-var bcrypt = require('bcrypt');
 var expressLayouts = require('express-ejs-layouts');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 
 //Add routes
 
@@ -25,10 +26,20 @@ app.set("layout", "layouts/layout");
 app.use(express.json());
 app.use(expressLayouts);
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: false}));
+app.use(cookieParser());
 
 //Set Routees
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
+
+//Cookies test
+app.get('/set-cookies', (req, res) =>{
+
+	res.cookie('userGet', "This is a test to see if the cookies work");
+	res.send("cookies saved");
+
+})
 
 //Error 404
 app.get('*', function(req, res){
