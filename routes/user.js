@@ -15,8 +15,10 @@ router.get('/login', userController.login_get);
 
 router.post('/login', userController.login_post);
 
+
+//reminder: add id param, access: req.params.id
 router.get('/home', (req, res) =>{
-    res.render('user/home');
+    res.render('user/home', {message: "Test Message"});
 })
 
 

@@ -1,6 +1,8 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
+const bcrypt = require('bcrypt');
+
 //error handling
 const handleErrors = (err) => {
     //console.log(err.message, err.code);
@@ -53,6 +55,22 @@ module.exports.login_get = (req, res) =>{
     res.render('user/login');
 }
 
-module.exports.login_post = (req, res) =>{
-    //res.render('/login');
+module.exports.login_post = async (req, res) =>{
+    try{
+        const user = await User.findOne({email: req.body.email});
+        const auth = await bcrypt.compare(req.body.password, user.password);
+
+        if(auth){
+            const token = createToken(user._id);
+            res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
+            res.redirect('../user/home');
+        }else{
+            res.status(400).render('user/login', {error: 'Invalid email/password'});
+        }
+
+        
+
+    }catch(err){
+        res.status(400).render('user/login', {error: 'Invalid email/password'});
+    }
 }

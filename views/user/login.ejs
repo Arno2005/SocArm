@@ -24,10 +24,6 @@
   
                         <label class="form-label" for="email">Email address</label>
                         <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-                        
-                        <% if(typeof errors != 'undefined' && errors.email != null){ %> 
-                          <span class="form-text text-danger"><%= errors.email%></span>
-                        <% } %>
   
                       </div>
                     </div>
@@ -38,8 +34,8 @@
   
                         <label class="form-label" for="password">Password</label>
                         <input type="password" class="form-control" name="password" id="password" placeholder="Enter password">
-                        <% if(typeof errors != 'undefined' && errors.password != null){ %> 
-                          <span class="form-text text-danger"><%= errors.password%></span>
+                        <% if(typeof error != 'undefined'){ %> 
+                          <p class="small text-danger mt-2 pt-1 mb-0"><%= error %></p>
                         <% } %>
 
                         <p class="small  mt-2 pt-1 mb-0">Don't have an account? <a href="/user/register"
