@@ -3,6 +3,15 @@ const jwt = require("jsonwebtoken");
 
 const bcrypt = require('bcrypt');
 
+
+//mail sender
+const hbs = require('nodemailer-express-handlebars')
+const nodemailer = require('nodemailer')
+const path = require('path')
+
+//reminder: change this too!!
+const emailSecret = "armsocemsectok";
+
 //error handling
 const handleErrors = (err) => {
     //console.log(err.message, err.code);
@@ -44,6 +53,58 @@ module.exports.register_post = async (req, res) =>{
         const token = createToken(user._id);
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
 
+        
+
+        //sending mail
+
+        const id = user._id;
+
+        let transporter = nodemailer.createTransport({
+            // host: 'localhost',
+            // port: 587,
+            // secure: false,
+            service: 'gmail',
+            auth: {
+              user: 'arno2005petrosyan@gmail.com',
+              pass: 'elxwaigyhzhukjah'
+            }
+        });
+
+        // point to the template folder
+        const handlebarOptions = {
+            viewEngine: {
+                partialsDir: path.resolve('./views/'),
+                defaultLayout: false,
+            },
+            viewPath: path.resolve('./views/'),
+        };
+
+        //creating token for email
+        const emailToken = jwt.sign({id}, emailSecret, {
+            expiresIn: 3 * 60 * 60
+        });
+        
+        // use a template file with nodemailer
+        transporter.use('compile', hbs(handlebarOptions))
+
+        let mailOptions = {
+            from: 'arno2005petrosyan@gmail.com',
+            to: email,
+            subject: 'Email Confirmation',
+            template: 'email',
+            context: {username, token: emailToken}
+          };
+
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+        });
+          
+
         //res.status(201).json({user: user._id});
         res.redirect('../user/home');
     }catch(err){
@@ -79,4 +140,29 @@ module.exports.login_post = async (req, res) =>{
 module.exports.logout_get = (req, res) =>{
     res.cookie('jwt', '', {maxAge: 1});
     res.redirect('login');
+}
+
+module.exports.verify_get = (req, res) =>{
+    const token = req.params.token;
+
+    if(token){
+        //reminder: change the secret!!
+        jwt.verify(token, emailSecret, async (err, decoded) =>{
+            if(err){
+                console.log(err.message);
+                res.redirect('/');
+            }else{
+                User.findByIdAndUpdate(decoded.id, {is_verified: true}, function(error, user) {
+                    if (error) {
+                        console.log(error);
+                    }else{
+                        res.redirect('../home');
+                    }
+                });
+            }
+        });
+
+    }else{
+        res.redirect('/');
+    }
 }

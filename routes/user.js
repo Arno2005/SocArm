@@ -21,6 +21,9 @@ router.post('/login', userController.login_post);
 router.get('/logout', userController.logout_get);
 
 
+router.get('/verify/:token', userController.verify_get);
+
+
 //reminder: add id param, access: req.params.id
 router.get('/home', requireAuth , (req, res) =>{
     res.render('user/home', {message: "Test Message"});

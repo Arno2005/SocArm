@@ -32,7 +32,7 @@
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link link-dark">
-                    Reser Password
+                    Reset Password
                 </a>
             </li>
             <li class="nav-item">
@@ -47,16 +47,23 @@
             </li> -->
         </ul>
         <hr>
-        <!-- <div class="profile-info">
-            <a href="/user/home" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>mdo</strong>
-            </a>
-        </div> -->
+        <div class="profile-info">
+            <!-- <a href="/user/home" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2"> -->
+                <strong><%= user.username %></strong>
+            <!-- </a> -->
+        </div>
     </div>
 
-    <div class="contnet mt-3">
-        <p class="display-5">Username: <%= user.username %> </p>
-        <p class="display-5">Email: <%= user.email %></p>
+    <div class="contnet">
+        <div class="text-center text-danger" <% if(user.is_verified) { %> style="display: none" <% } %> >
+            <span> Warning! We've Sent You a Confirmation Email. Please confirm it or Your Account Will be Deleted In 24 Hours.  </span>
+        </div>    
+        
+        <div  class="mt-5 pt-3">
+            <p class="fs-1 fw-normal">Username: <%= user.username %> </p>
+            <p class="fs-1 fw-normal">Email: <%= user.email %></p>
+            <% if(user.is_verified) { %> <span class="display-6 fw-normal text-success"> This Account Is Verified </span>   <% }else{ %> <span class="display-6 fw-normal text-danger"> This Account Is Not Verified </span> <% } %>
+        </div>
     </div>
 </div>
