@@ -46,9 +46,4 @@ userSchema.pre('save', async function (next) {
 });
 
 
-//statis methos for login
-// userSchema.statics.login = async function(email, password){
-//     const user = await this.
-// }
-
 module.exports = mongoose.model('user', userSchema);

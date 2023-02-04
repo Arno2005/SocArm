@@ -19,6 +19,7 @@ const handleErrors = (err) => {
 
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
+    //reminder: change the secret!!
     return jwt.sign({id}, 'armjwttoksec', {
         expiresIn: maxAge
     });
@@ -73,4 +74,9 @@ module.exports.login_post = async (req, res) =>{
     }catch(err){
         res.status(400).render('user/login', {error: 'Invalid email/password'});
     }
+}
+
+module.exports.logout_get = (req, res) =>{
+    res.cookie('jwt', '', {maxAge: 1});
+    res.redirect('login');
 }

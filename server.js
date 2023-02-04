@@ -29,6 +29,11 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: false}));
 app.use(cookieParser());
 
+
+//checking user
+const { checkUser } = require('./middleware/authMiddleware');
+app.get('*', checkUser);
+
 //Set Routees
 app.use('/', indexRouter);
 app.use('/user', usersRouter);

@@ -1,2 +1,62 @@
-<h2>Hello User!</h2>
-<h3><%= message %></h3>
+<style>
+    header{
+        display: none;
+    }
+
+    .nav-item a{
+        margin-left: 16px;
+    }
+</style>
+
+<div class="d-flex">
+
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end me-5" style="width: 280px; height: 100vh;">
+
+        <span class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none fs-4">Profile</span>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="/user/home" class="nav-link link-dark">
+                Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link link-dark">
+                    My Posts
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link link-dark">
+                    Edit Profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link link-dark">
+                    Reser Password
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/user/logout" class="nav-link link-dark text-danger">
+                Logout
+                </a>
+            </li>
+            <!-- <li class="nav-item">
+                <a href="#" class="nav-link link-dark">
+                Products
+                </a>
+            </li> -->
+        </ul>
+        <hr>
+        <!-- <div class="profile-info">
+            <a href="/user/home" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>mdo</strong>
+            </a>
+        </div> -->
+    </div>
+
+    <div class="contnet mt-3">
+        <p class="display-5">Username: <%= user.username %> </p>
+        <p class="display-5">Email: <%= user.email %></p>
+    </div>
+</div>
