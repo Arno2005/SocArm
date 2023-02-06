@@ -34,6 +34,7 @@ const createToken = (id) => {
     });
 }
 
+
 module.exports.register_get = (req, res) =>{
     if(req.cookies.jwt){
         res.redirect('../user/home');
@@ -136,6 +137,40 @@ module.exports.login_post = async (req, res) =>{
         res.status(400).render('user/login', {error: 'Invalid email/password'});
     }
 }
+
+//user credentials edit
+module.exports.updateName_post = async (req, res) =>{
+    let check = await User.findOne({ username: req.body.username });
+    let currUser = await User.findById(req.body.id);
+    if(req.body.username == ''){
+        res.redirect('../user/home');
+    }
+    
+    else if(check ){
+        if(check._id == req.body.id){
+            res.redirect('../user/home');
+        }else{
+            res.render('user/home', {user : currUser, error: 'That username is already registered'});
+        }
+    }
+    else{
+        User.findByIdAndUpdate(req.body.id, {username: req.body.username}, function(err, user) {
+            if (err) {
+                console.log(err);
+            }else{
+                res.redirect('../user/home');
+            }
+        });
+    }
+    
+}
+
+module.exports.editPass_get = (req, res) =>{
+    res.render('user/editPass');
+}
+
+//update pass post here
+
 
 module.exports.logout_get = (req, res) =>{
     res.cookie('jwt', '', {maxAge: 1});

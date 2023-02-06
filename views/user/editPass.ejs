@@ -1,0 +1,99 @@
+<style>
+    header{
+        display: none;
+    }
+
+    .nav-item a{
+        margin-left: 16px;
+    }
+</style>
+
+<div class="d-flex">
+
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end me-5" style="width: 280px; height: 100vh;">
+
+        <span class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none fs-4">Profile</span>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="/user/home" class="nav-link link-dark">
+                Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link link-dark">
+                    My Posts
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link link-dark">
+                    Reset Password
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/user/logout" class="nav-link link-dark text-danger">
+                Logout
+                </a>
+            </li>
+            <!-- <li class="nav-item">
+                <a href="#" class="nav-link link-dark">
+                Products
+                </a>
+            </li> -->
+        </ul>
+        <hr>
+        <div class="profile-info">
+            <!-- <a href="/user/home" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2"> -->
+                <strong><%= user.username %></strong>
+            <!-- </a> -->
+        </div>
+    </div>
+
+    <div class="contnet" style="width: 700px">
+        <p class=" h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Reset Password</p>
+  
+                  <form class="mx-1 mx-md-4" action="/user/update" method="POST" onsubmit="(e) =>{ e.preventDefault() }">
+  
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <div class="form-outline flex-fill mb-0">
+  
+                        <label class="form-label" for="password">Password</label>
+                        <input type="text" class="form-control" name="password" id="password" aria-describedby="passwordHelp" placeholder="Enter password">
+  
+                      </div>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <div class="form-outline flex-fill mb-0">
+    
+                            <label class="form-label" for="new_password">New Password</label>
+                            <input type="text" class="form-control" name="new_password" id="new_password" aria-describedby="passwordHelp" placeholder="New password">
+                        </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <div class="form-outline flex-fill mb-0">
+  
+                        <label class="form-label" for="password_repeat">Repeat New Password</label>
+                        <input type="text" class="form-control" name="password_repeat" id="password_repeat" aria-describedby="passwordHelp" placeholder="Repeat password">
+                       
+                        <% if(typeof error != 'undefined'){ %> 
+                          <p class="small text-danger mt-2 pt-1 mb-0"><%= error %></p>
+                        <% } %>
+
+                      </div>
+                    </div>
+
+                    
+  
+                  
+  
+                    <div class="d-flex justify-content-start mr-4 mb-3 mb-lg-4">
+                      <button type="submit" class="btn btn-outline-success btn-start px-5">Change Password</button>
+                    </div>
+  
+            </form>
+    </div>
+</div>

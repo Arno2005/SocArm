@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
     }
 
     res.render('index', {isLogged});
-})
+});
 
 
 router.get('/users', requireAuth ,async (req, res) => {

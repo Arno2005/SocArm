@@ -6,6 +6,10 @@
     .nav-item a{
         margin-left: 16px;
     }
+
+    .warn-box{
+        background: #e8e7e7;
+    }
 </style>
 
 <div class="d-flex">
@@ -26,12 +30,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link link-dark">
-                    Edit Profile
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link link-dark">
+                <a href="/user/edit-pass" class="nav-link link-dark">
                     Reset Password
                 </a>
             </li>
@@ -48,20 +47,53 @@
         </ul>
         <hr>
         <div class="profile-info">
-            <!-- <a href="/user/home" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2"> -->
-                <strong><%= user.username %></strong>
-            <!-- </a> -->
+            <!-- <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2"> -->
+            <strong><%= user.username %></strong>
         </div>
     </div>
 
     <div class="contnet">
-        <div class="text-center text-danger" <% if(user.is_verified) { %> style="display: none" <% } %> >
+        <div class="warn-box border border-danger border-top-0 ps-1 pe-1 text-center text-danger rounded-bottom" <% if(user.is_verified) { %> style="display: none" <% } %> >
             <span> Warning! We've Sent You a Confirmation Email. Please confirm it or Your Account Will be Deleted In 24 Hours.  </span>
         </div>    
         
         <div  class="mt-5 pt-3">
-            <p class="fs-1 fw-normal">Username: <%= user.username %> </p>
+            <p class="fs-1 fw-normal d-inline-block">Username: <%= user.username %> </p> 
+            <span style="font-size: 20px;">
+                (<a type="button" class="test-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                Change
+                </a>)
+                <div class="modal fade" id="myModal">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Change Username</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="/user/update-name" method="POST">
+                            <div class="modal-body">
+                                
+                                    <div class="mb-3">
+
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" name="username" value="<%= user.username %>" class="form-control" id="username" aria-describedby="usernameHelp">
+                                    <span class="form-text text-danger display-6"> Your Username will not be changed if it is alredy being used. </span>
+
+                                    <input type="hidden" value="<%= user.id %>" name="id">
+                                    
+                                    </div>     
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-outline-success">Save changes</button>
+                            </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+            </span>
+            <% if(typeof error != 'undefined' && error != ''){ %> <p class="text-danger"><%= error %></p> <% error = ''; } %>
             <p class="fs-1 fw-normal">Email: <%= user.email %></p>
             <% if(user.is_verified) { %> <span class="display-6 fw-normal text-success"> This Account Is Verified </span>   <% }else{ %> <span class="display-6 fw-normal text-danger"> This Account Is Not Verified </span> <% } %>
         </div>
