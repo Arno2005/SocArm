@@ -7,7 +7,8 @@ const bcrypt = require('bcrypt');
 //mail sender
 const hbs = require('nodemailer-express-handlebars')
 const nodemailer = require('nodemailer')
-const path = require('path')
+const path = require('path');
+//const { findByIdAndRemove } = require("../models/user");
 
 //reminder: change this too!!
 const emailSecret = "armsocemsectok";
@@ -166,10 +167,49 @@ module.exports.updateName_post = async (req, res) =>{
 }
 
 module.exports.editPass_get = (req, res) =>{
-    res.render('user/editPass');
+    res.render('user/edit-pass');
 }
 
 //update pass post here
+module.exports.updatePass_post = async (req, res) =>{
+    let user = await User.findById(req.body.id);
+    if(!user){
+        res.send('no user')
+    }else{
+        try{
+                let auth = await bcrypt.compare(req.body.password, user.password);
+
+                if(!auth){
+                    res.render('user/edit-pass', {user: user, error: "Incorrect password"});
+                }
+                else if(req.body.password == req.body.new_password){
+                    res.render('user/edit-pass', {user: user, error: "New password cannot be the same as the old one."});
+                }
+                else if(req.body.new_password !== req.body.password_repeat){
+                    //await user.update({password: await bcrypt.hash(req.body.new_password, 10)});
+                    res.render('user/edit-pass', {user, error: "Please enter Your new password correctly in BOTH fields."});
+                }
+                else{
+                    user.password = req.body.new_password;
+                    try{
+                        await user.save();
+                        res.render('user/edit-pass', {user, success: "Your password has been successfully changed."});
+                    }catch(err){
+                        if(err.message.includes('user validation failed')){
+                            res.render('user/edit-pass', {user, error: err.errors['password'].message});    
+                        }else{
+                            res.render('user/edit-pass', {user, error: "Something went wrong! Please contact us."});
+                        }
+                    } 
+                }
+            }catch(err){
+                res.render('user/edit-pass', {user: user, error: "Error Occured, Please Try again later."});
+                //console.log(Object.values(err.password).message);
+            }
+    }
+    
+     
+}
 
 
 module.exports.logout_get = (req, res) =>{

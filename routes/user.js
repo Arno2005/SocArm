@@ -32,6 +32,6 @@ router.post('/update-name', requireAuth , userController.updateName_post);
 router.get('/edit-pass', requireAuth , userController.editPass_get);
 //password update post method here
 //reminder: think of an effective way to pass the id
-
+router.post('/edit-pass', requireAuth, userController.updatePass_post);
 
 module.exports = router;

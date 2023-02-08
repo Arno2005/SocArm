@@ -6,6 +6,11 @@
     .nav-item a{
         margin-left: 16px;
     }
+
+    .succ-box{
+        background: rgb(0, 101, 0);
+        color: #fff;
+    }
 </style>
 
 <div class="d-flex">
@@ -51,16 +56,19 @@
     </div>
 
     <div class="contnet" style="width: 700px">
+        <div class="succ-box border border-top-0 ps-1 pe-1 text-center rounded-bottom" <% if(typeof success == 'undefined') { %> style="display: none" <% } %> >
+            <span> <% if(typeof success != 'undefined') { %> <%= success %> <% } %>   </span>
+        </div> 
         <p class=" h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Reset Password</p>
   
-                  <form class="mx-1 mx-md-4" action="/user/update" method="POST" onsubmit="(e) =>{ e.preventDefault() }">
+                  <form class="mx-1 mx-md-4" action="/user/edit-pass" method="POST" onsubmit="(e) =>{ e.preventDefault() }">
   
   
                     <div class="d-flex flex-row align-items-center mb-4">
                       <div class="form-outline flex-fill mb-0">
   
                         <label class="form-label" for="password">Password</label>
-                        <input type="text" class="form-control" name="password" id="password" aria-describedby="passwordHelp" placeholder="Enter password">
+                        <input type="password" class="form-control" name="password" id="password" aria-describedby="passwordHelp" placeholder="Enter password">
   
                       </div>
                     </div>
@@ -69,7 +77,7 @@
                         <div class="form-outline flex-fill mb-0">
     
                             <label class="form-label" for="new_password">New Password</label>
-                            <input type="text" class="form-control" name="new_password" id="new_password" aria-describedby="passwordHelp" placeholder="New password">
+                            <input type="password" class="form-control" name="new_password" id="new_password" aria-describedby="passwordHelp" placeholder="New password">
                         </div>
                     </div>
   
@@ -77,11 +85,13 @@
                       <div class="form-outline flex-fill mb-0">
   
                         <label class="form-label" for="password_repeat">Repeat New Password</label>
-                        <input type="text" class="form-control" name="password_repeat" id="password_repeat" aria-describedby="passwordHelp" placeholder="Repeat password">
+                        <input type="password" class="form-control" name="password_repeat" id="password_repeat" aria-describedby="passwordHelp" placeholder="Repeat password">
+
+                        <input type="hidden" name='id' value="<%= user.id %>">
                        
                         <% if(typeof error != 'undefined'){ %> 
                           <p class="small text-danger mt-2 pt-1 mb-0"><%= error %></p>
-                        <% } %>
+                        <% } error = '' %>
 
                       </div>
                     </div>

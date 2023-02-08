@@ -6,7 +6,8 @@ const uniqueValidator = require('mongoose-unique-validator');
 //For password hash
 const bcrypt = require('bcrypt');
 
-
+//validation
+//reminder: read about validator functionality
 const {isEmail} = require('validator');
 
 const userSchema = new mongoose.Schema({
@@ -48,6 +49,15 @@ userSchema.pre('save', async function (next) {
 
     next();
 });
+
+
+//add the last date when the user was updated
+//might use
+// userSchema.pre('updateOne', function(next) {
+//     this.set({ updatedAt: new Date() });
+
+//     next();
+// });
 
 
 module.exports = mongoose.model('user', userSchema);
