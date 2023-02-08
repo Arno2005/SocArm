@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Please enter a password'],
         minlength: [6, 'Password minimum length should be 6 characters'],
     },
+    bio:{
+        type: String,
+        maxlength: [150, 'Maximum number of characters is 150'],
+        default: '',
+    },
     is_verified: {
         type: Boolean,
         default: 0,

@@ -211,6 +211,30 @@ module.exports.updatePass_post = async (req, res) =>{
      
 }
 
+module.exports.updateBio_post = async (req, res) =>{
+    let user = await User.findById(req.body.id);
+    try{ 
+        if(!user){
+            res.redirect('../user/home');
+        }
+        else if(req.body.bio == ''){
+            res.redirect('../user/home');
+        }else if(req.body.bio.length > 150){
+            res.render('user/home', {user, errorBio: 'Bio cannot be contain more than 150 characters.'});
+        }else{
+            user.bio = req.body.bio;
+            await user.save();
+            res.redirect('../user/home')
+        }
+
+    }catch(err){
+        if(err.message.includes('user validation failed')){
+            res.render('user/home', {user, errorBio: err.errors['bio'].message});    
+        }else{
+            res.render('user/edit-pass', {user, errorBio: "Something went wrong! Please contact us."});
+        }
+    }
+}
 
 module.exports.logout_get = (req, res) =>{
     res.cookie('jwt', '', {maxAge: 1});

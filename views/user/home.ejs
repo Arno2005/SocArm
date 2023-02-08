@@ -58,7 +58,7 @@
         </div>    
         
         <div  class="mt-5 pt-3">
-            <p class="fs-1 fw-normal d-inline-block">Username: <%= user.username %> </p> 
+            <p class="fs-1 fw-normal d-inline-block"><%= user.username %> </p> 
             <span style="font-size: 20px;">
                 (<a type="button" class="test-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                 Change
@@ -94,8 +94,47 @@
                   </div>
             </span>
             <% if(typeof error != 'undefined' && error != ''){ %> <p class="text-danger"><%= error %></p> <% error = ''; } %>
-            <p class="fs-1 fw-normal">Email: <%= user.email %></p>
-            <% if(user.is_verified) { %> <span class="display-6 fw-normal text-success"> This Account Is Verified </span>   <% }else{ %> <span class="display-6 fw-normal text-danger"> This Account Is Not Verified </span> <% } %>
+            <p class="fs-4 fw-normal"><%= user.email %>
+            <% if(user.is_verified) { %> <span class="fs-6 fw-normal text-success"> Verified Account </span>   <% }else{ %> <span class="fs-6 fw-normal text-danger"> Unverified Account  </span> <% } %>
+            
+            </p>
+            <p style="max-width: 800px; font-size: 18px;" class="d-inline-block"> <%= user.bio %></p>
+            <span style="font-size: 20px;">
+                (<a type="button" style="font-size: 18px;" class="test-primary" data-bs-toggle="modal" data-bs-target="#myBioModal">
+                <% if(user.bio == ''){ %> Add Bio <% }else{%> Change <%}%>
+                </a>)
+                <div class="modal fade" id="myBioModal">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Change Bio</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="/user/update-bio" method="POST">
+                            <div class="modal-body">
+                                
+                                    <div class="mb-3">
+
+                                    <label for="bio" class="form-label">Bio</label>
+                                    <textarea name="bio" class="d-block" id="bio" cols="53" maxlength="150" style="resize: vertical; min-height: 100px; max-height: 250px; font-size: 15px;"><%= user.bio %></textarea>
+                                    <span class="form-text text-danger display-6"> Maximum number of characters is 150 </span>
+
+                                    <input type="hidden" value="<%= user.id %>" name="id">
+                                    
+                                    </div>     
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-outline-success">Save changes</button>
+                            </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+            </span>
+            <% if(typeof errorBio != 'undefined' && errorBio != ''){ %> <p class="text-danger"><%= errorBio %></p> <% error = ''; } %>
+            
         </div>
     </div>
 </div>
