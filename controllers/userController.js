@@ -222,9 +222,14 @@ module.exports.updateBio_post = async (req, res) =>{
         }else if(req.body.bio.length > 150){
             res.render('user/home', {user, errorBio: 'Bio cannot be contain more than 150 characters.'});
         }else{
-            user.bio = req.body.bio;
-            await user.save();
-            res.redirect('../user/home')
+            User.findByIdAndUpdate(user.id, {bio: req.body.bio},  function(error, user) {
+                if (error) {
+                    res.render('user/home', {user, errorBio: 'Something went wrong! Please contact us.'});
+                    console.log(error);
+                }else{
+                    res.redirect('../user/home');
+                }
+            });
         }
 
     }catch(err){
