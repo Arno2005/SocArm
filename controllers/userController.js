@@ -11,6 +11,7 @@ const path = require('path');
 //const { findByIdAndRemove } = require("../models/user");
 
 //reminder: change this too!!
+const userToken = 'armjwttoksec';
 const emailSecret = "armsocemsectok";
 
 //error handling
@@ -30,7 +31,7 @@ const handleErrors = (err) => {
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
     //reminder: change the secret!!
-    return jwt.sign({id}, 'armjwttoksec', {
+    return jwt.sign({id}, userToken, {
         expiresIn: maxAge
     });
 }
@@ -95,7 +96,7 @@ module.exports.register_post = async (req, res) =>{
             subject: 'Email Confirmation',
             template: 'email',
             context: {username, token: emailToken}
-          };
+        };
 
 
         transporter.sendMail(mailOptions, function(error, info){
@@ -269,4 +270,43 @@ module.exports.verify_get = (req, res) =>{
     }else{
         res.redirect('/');
     }
+}
+
+
+module.exports.deleteAcc_get = async (req, res) =>{
+    res.render('user/delete-acc');
+}
+
+module.exports.deleteAcc_post = async (req, res) =>{
+    const token = req.cookies.jwt;
+    const user = await User.findById(req.body.id);
+    jwt.verify(token, userToken, async (err, decoded) =>{
+        if(req.body.password !== req.body.password_repeat || req.body.password == '' || req.body.password_repeat == ''){
+            res.render('user/delete-acc', {user, error: 'Please enter Your password correctly in BOTH fields.'}); 
+        }else{
+            try{
+                const auth = await bcrypt.compare(req.body.password, user.password);
+                if(!auth){
+                    res.render('user/delete-acc', {user, error: 'Incorrect Password'});
+                }else{
+                    if(err || req.body.id != decoded.id){
+                        res.render('user/delete-acc', {user, error: 'Could not verify the user!'});
+                    }else{
+                        User.findByIdAndDelete(decoded.id, function(error, userFind) {
+                            if (error) {
+                                res.render('user/delete-acc', {user, error: 'Could not verify the user!'});
+                            }else{
+                                res.cookie('jwt', '', {maxAge: 1});
+                                res.redirect('login');
+                            }
+                        });
+                    }
+                }
+            }
+            catch(err){
+                res.render('user/delete-acc', {user, error: 'Something went wrong!'});
+            }
+        }
+        
+    });
 }

@@ -35,4 +35,7 @@ router.post('/update-bio', requireAuth , userController.updateBio_post);
 router.get('/edit-pass', requireAuth , userController.editPass_get);
 router.post('/edit-pass', requireAuth, userController.updatePass_post);
 
+router.get('/delete', requireAuth, userController.deleteAcc_get);
+router.post('/delete', requireAuth, userController.deleteAcc_post);
+
 module.exports = router;
