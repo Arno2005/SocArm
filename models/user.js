@@ -34,6 +34,12 @@ const userSchema = new mongoose.Schema({
         maxlength: [150, 'Maximum number of characters is 150'],
         default: '',
     },
+    picture: {
+        type: Buffer,
+    },
+    picture_type: {
+        type: String,
+    },
     is_verified: {
         type: Boolean,
         default: 0,

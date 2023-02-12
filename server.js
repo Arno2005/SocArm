@@ -7,6 +7,7 @@ if(process.env.NODE_ENV !== 'production'){
 
 var express = require('express');
 var expressLayouts = require('express-ejs-layouts');
+const fileUpload = require('express-fileupload');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 
@@ -28,6 +29,7 @@ app.use(expressLayouts);
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: false}));
 app.use(cookieParser());
+app.use(fileUpload());
 
 
 //checking user
