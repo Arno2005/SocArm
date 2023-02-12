@@ -1,8 +1,12 @@
-<h1 class="mb-5">Display All The Users</h1>
+
 <div class="container mb-3">
+    <h1 class="mb-5">Users</h1>
     <% users.forEach(user =>{ %>
-        <h3><%= user.username %></h3>
-        <h4><%= user.email %></h4>
+        <div class="d-flex align-items-center">
+            <img src="data:<%=user.picture_type%>;base64,<%=user.picture.toString('base64')%>" alt="" width="50" height="50" class="me-4 rounded-circle me-2">
+             <a class="text-dark" href="/users/display/<%=user._id%>"><h3 class="d-inline-block"><%= user.username %></h3></a>
+        </div>
+        
         <hr>
     <% }) %>
     

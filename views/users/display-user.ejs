@@ -1,0 +1,36 @@
+<div class="contnet container">  
+    <div  class="d-flex align-items-center mt-5 pt-3">
+        <div class="image me-5">
+                <img src="data:<%=displayUser.picture_type%>;base64,<%=displayUser.picture.toString('base64')%>" alt="" width="200" height="200" class="rounded-circle me-2">
+        </div>
+
+        <div class="about" >
+            <p class="fs-1 fw-normal d-inline-block">
+            
+                <%= displayUser.username %> 
+            
+            </p> 
+
+            <p class="fs-4 fw-normal"><%= displayUser.email %>
+            <% if(displayUser.is_verified) { %> <span class="fs-6 fw-normal text-success"> Verified Account </span>   <% }else{ %> <span class="fs-6 fw-normal text-danger"> Unverified Account  </span> <% } %>
+            
+            </p>
+            
+            <p style="max-width: 600px; font-size: 18px;" class="d-inline-block">
+                
+                <%= displayUser.bio %>
+
+            </p>
+        </div>
+        
+        
+        
+    </div>
+
+    <hr>
+    
+    <!-- <div class="posts">
+
+    </div> -->
+
+</div>

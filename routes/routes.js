@@ -26,4 +26,15 @@ router.get('/users', requireAuth ,async (req, res) => {
     
 })
 
+router.get('/users/display/:id', requireAuth ,async (req, res) => {
+    try{
+        const displayUser = await User.findById(req.params.id);
+
+        res.render('users/display-user', {displayUser});
+    }catch{
+        res.redirect('/');
+    }
+    
+})
+
 module.exports = router;
