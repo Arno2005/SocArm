@@ -15,36 +15,47 @@
 <div class="d-flex">
 
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end me-5" style="width: 280px; height: 100vh;">
-
         <span class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none fs-4">Profile</span>
         <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="/user/home" class="nav-link link-dark">
-                Home
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link link-dark">
-                    My Posts
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/user/edit-pass" class="nav-link link-dark">
-                    Reset Password
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/user/logout" class="nav-link link-dark text-danger">
-                    Logout
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/user/delete" class="nav-link link-dark text-danger">
-                    Delete Account
-                </a>
-            </li>
-        </ul>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button> -->
+                <!-- add collapse navbar-collapse -->
+                <div class="">
+                    
+                    <ul class="navbar-nav me-auto nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="/user/home" class="nav-link link-dark">
+                            Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link link-dark">
+                                My Posts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/user/edit-pass" class="nav-link link-dark">
+                                Reset Password
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/user/logout" class="nav-link link-dark text-danger">
+                                Logout
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/user/delete" class="nav-link link-dark text-danger">
+                                Delete Account
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
         <hr>
         <div class="profile-info">
             <!-- <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2"> -->
@@ -58,7 +69,11 @@
         </div>    
         
         <div  class="mt-5 pt-3">
-            <p class="fs-1 fw-normal d-inline-block"><%= user.username %> </p> 
+            <p class="fs-1 fw-normal d-inline-block">
+                
+                <%= user.username %> 
+            
+            </p> 
             <span style="font-size: 20px;">
                 (<a type="button" class="test-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                 Change
@@ -76,7 +91,7 @@
                                     <div class="mb-3">
 
                                     <label for="username" class="form-label">Username</label>
-                                    <input type="text" name="username" value="<%= user.username %>" class="form-control" id="username" aria-describedby="usernameHelp">
+                                    <input type="text" name="username" maxlength="15" value="<%= user.username %>" class="form-control" id="username" aria-describedby="usernameHelp">
                                     <span class="form-text text-danger display-6"> Your Username will not be changed if it is alredy being used. </span>
 
                                     <input type="hidden" value="<%= user.id %>" name="id">
@@ -98,41 +113,46 @@
             <% if(user.is_verified) { %> <span class="fs-6 fw-normal text-success"> Verified Account </span>   <% }else{ %> <span class="fs-6 fw-normal text-danger"> Unverified Account  </span> <% } %>
             
             </p>
-            <p style="max-width: 800px; font-size: 18px;" class="d-inline-block"> <%= user.bio %></p>
-            <span style="font-size: 20px;">
-                (<a type="button" style="font-size: 18px;" class="test-primary" data-bs-toggle="modal" data-bs-target="#myBioModal">
-                <% if(user.bio == ''){ %> Add Bio <% }else{%> Change <%}%>
-                </a>)
-                <div class="modal fade" id="myBioModal">
-                    <div class="modal-dialog modal-dialog-centered">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Change Bio</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form action="/user/update-bio" method="POST">
-                            <div class="modal-body">
-                                
-                                    <div class="mb-3">
-
-                                    <label for="bio" class="form-label">Bio</label>
-                                    <textarea name="bio" class="d-block" id="bio" cols="53" maxlength="150" style="resize: vertical; min-height: 100px; max-height: 250px; font-size: 15px;"><%= user.bio %></textarea>
-                                    <span class="form-text text-danger display-6"> Maximum number of characters is 150 </span>
-
-                                    <input type="hidden" value="<%= user.id %>" name="id">
+            <p style="max-width: 800px; font-size: 18px;" class="d-inline-block">
+                
+                <%= user.bio %>
+            
+                <span style="font-size: 20px;">
+                    (<a type="button" style="font-size: 18px;" class="test-primary" data-bs-toggle="modal" data-bs-target="#myBioModal">
+                    <% if(user.bio == ''){ %> Add Bio <% }else{%> Change <%}%>
+                    </a>)
+                    <div class="modal fade" id="myBioModal">
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Change Bio</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="/user/update-bio" method="POST">
+                                <div class="modal-body">
                                     
-                                    </div>     
-                                
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-outline-success">Save changes</button>
-                            </div>
-                        </form>
-                      </div>
+                                        <div class="mb-3">
+
+                                        <label for="bio" class="form-label">Bio</label>
+                                        <textarea name="bio" class="d-block" id="bio" cols="53" maxlength="150" style="resize: vertical; min-height: 100px; max-height: 250px; font-size: 15px;"><%= user.bio %></textarea>
+                                        <span class="form-text text-danger display-6"> Maximum number of characters is 150 </span>
+
+                                        <input type="hidden" value="<%= user.id %>" name="id">
+                                        
+                                        </div>     
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-outline-success">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
                     </div>
-                  </div>
-            </span>
+                </span>
+            </p>
+            
             <% if(typeof errorBio != 'undefined' && errorBio != ''){ %> <p class="text-danger"><%= errorBio %></p> <% error = ''; } %>
             
         </div>

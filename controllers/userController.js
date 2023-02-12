@@ -156,13 +156,18 @@ module.exports.updateName_post = async (req, res) =>{
         }
     }
     else{
-        User.findByIdAndUpdate(req.body.id, {username: req.body.username}, function(err, user) {
-            if (err) {
-                console.log(err);
-            }else{
-                res.redirect('../user/home');
-            }
-        });
+        if(req.body.username.length > 15){
+            res.render('user/home', {user : currUser, error: 'Username cannot contain more than 10 characters.'});
+        }else{
+            User.findByIdAndUpdate(req.body.id, {username: req.body.username}, function(err, user) {
+                if (err) {
+                    console.log(err);
+                }else{
+                    res.redirect('../user/home');
+                }
+            });    
+        }
+        
     }
     
 }
