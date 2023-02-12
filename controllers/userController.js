@@ -74,10 +74,9 @@ module.exports.register_post = async (req, res) =>{
         let transporter = nodemailer.createTransport({
             // host: 'localhost',
             // port: 587,
-            // secure: false,
             service: 'gmail',
             auth: {
-              user: 'arno2005petrosyan@gmail.com',
+              user: process.env.USER,
               pass: process.env.PASS
             }
         });
