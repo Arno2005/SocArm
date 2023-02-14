@@ -4,9 +4,9 @@
 
         <div class="container-fluid">
           <% if(typeof user != 'undefined' && user != null) { %>
-            <a class="navbar-brand pe-4 border-end" href="/user/home"> Hello <%= user.username %></a>
+            <a class="navbar-brand ps-4 pe-4 border-end" href="/user/home"> Hello <%= user.username %></a>
           <% } else { %>
-          <a class="navbar-brand" href="/">Socarm</a>
+          <a class="navbar-brand ps-4 pe-4 border-end" href="/">Socarm</a>
           <% } %>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,7 +24,7 @@
               </li>
               <% if(typeof user == 'undefined' || user == null) { %>
                 <li class="nav-item">
-                  <a class="nav-link" href="user/login">Login</a>
+                  <a class="nav-link" href="/user/login">Login</a>
                 </li>
               <% } %>
             </ul>

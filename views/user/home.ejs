@@ -10,54 +10,57 @@
     .warn-box{
         background: #e8e7e7;
     }
+
+    .image a{
+        background-color: black;
+    }
+
+    .image img{
+        opacity: .5;
+    }
+
+    .image i{
+        display: block;
+        position: absolute;
+        margin-top: -100px;
+        margin-left: 100px;
+        transform: translate(-50%, -50%);
+        color: #fff;
+    }
 </style>
+
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
 <div class="d-flex">
 
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end me-5" style="width: 280px; height: 100vh;">
-        <span class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none fs-4">Profile</span>
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto ps-3 link-dark text-decoration-none fs-4" style="color: rgba(0,0,0,.65);"> &lt; Go Back </a>
         <hr>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button> -->
-                <!-- add collapse navbar-collapse -->
-                <div class="">
-                    
-                    <ul class="navbar-nav me-auto nav-pills flex-column mb-auto">
-                        <li class="nav-item">
-                            <a href="/" class="nav-link link-dark">
-                                Home
-                            </a>
-                        </li>
-                        <!-- <li class="nav-item">
-                            <a href="#" class="nav-link link-dark">
-                                My Posts
-                            </a>
-                        </li> -->
-                        <li class="nav-item">
-                            <a href="/user/edit-pass" class="nav-link link-dark">
-                                Reset Password
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/user/logout" class="nav-link link-dark text-danger">
-                                Logout
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/user/delete" class="nav-link link-dark text-danger">
-                                Delete Account
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="/user/home" class="nav-link link-dark">
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/user/edit-pass" class="nav-link link-dark">
+                    Reset Password
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/user/logout" class="nav-link link-dark text-danger">
+                Logout
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/user/delete" class="nav-link link-dark text-danger">
+                    Delete Account
+                </a>
+            </li>
+        </ul>
         
         <hr>
-        <div class="profile-info ps-1">
+        <div class="profile-info ps-3">
             <img src="data:<%=user.picture_type%>;base64,<%=user.picture.toString('base64')%>" alt="" width="32" height="32" class="rounded-circle me-2">
             <strong><%= user.username %></strong>
         </div>
@@ -68,11 +71,11 @@
             <span> Warning! We've Sent You a Confirmation Email. Please confirm Your Email or Your Account Will be Deleted In 24 Hours.  </span>
         </div>    
        
-        <div  class="d-flex align-items-center mt-5 pt-3">
+        <div  class="d-flex align-items-center mt-5 mb-4 pt-3">
             <div class="image me-5">
-                <a type="button" data-bs-toggle="modal" data-bs-target="#myModalPic">
-                    <img src="data:<%=user.picture_type%>;base64,<%=user.picture.toString('base64')%>" alt="" width="200" height="200" class="rounded-circle me-2">
-
+                <a type="button" class="d-inline-block rounded-circle me-2" data-bs-toggle="modal" data-bs-target="#myModalPic">
+                    <img src="data:<%=user.picture_type%>;base64,<%=user.picture.toString('base64')%>" alt="" width="200" height="200" class="rounded-circle">
+                    <i class="fs-3 far fa-edit"></i>
                 </a>
 
                 <div class="modal fade" id="myModalPic">
@@ -158,7 +161,7 @@
                 
                     <span style="font-size: 20px;">
                         (<a type="button" style="font-size: 18px;" class="test-primary" data-bs-toggle="modal" data-bs-target="#myBioModal">
-                        <% if(user.bio == ''){ %> Add Bio <% }else{%> Change <%}%>
+                        <% if(user.bio.trim() == ''){ %> Add Bio <% }else{%> Change <%}%>
                         </a>)
                         <div class="modal fade" id="myBioModal">
                             <div class="modal-dialog modal-dialog-centered">
@@ -199,7 +202,7 @@
             
         </div>
 
-        <hr>
+        <hr style="min-width: 65vw;">
         
         <!-- <div class="posts">
 

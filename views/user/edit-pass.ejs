@@ -17,19 +17,14 @@
 
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end me-5" style="width: 280px; height: 100vh;">
 
-        <span class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none fs-4">Profile</span>
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto ps-3 link-dark text-decoration-none fs-4" style="color: rgba(0,0,0,.65);"> &lt; Go Back </a>
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-                <a href="/" class="nav-link link-dark">
+                <a href="/user/home" class="nav-link link-dark">
                     Home
                 </a>
             </li>
-            <!-- <li class="nav-item">
-                <a href="#" class="nav-link link-dark">
-                    My Posts
-                </a>
-            </li> -->
             <li class="nav-item">
                 <a href="/user/edit-pass" class="nav-link link-dark">
                     Reset Password
@@ -47,11 +42,9 @@
             </li>
         </ul>
         <hr>
-        <div class="profile-info">
-            <!-- <a href="/user/home" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2"> -->
-                <strong><%= user.username %></strong>
-            <!-- </a> -->
+        <div class="profile-info ps-3">
+            <img src="data:<%=user.picture_type%>;base64,<%=user.picture.toString('base64')%>" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong><%= user.username %></strong>
         </div>
     </div>
 

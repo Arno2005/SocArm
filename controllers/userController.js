@@ -84,10 +84,10 @@ module.exports.register_post = async (req, res) =>{
         // point to the template folder
         const handlebarOptions = {
             viewEngine: {
-                partialsDir: path.resolve('./views/'),
+                partialsDir: path.resolve('./views/other'),
                 defaultLayout: false,
             },
-            viewPath: path.resolve('./views/'),
+            viewPath: path.resolve('./views/other'),
         };
 
         //creating token for email
@@ -197,11 +197,11 @@ module.exports.updatePicture_post = async (req, res) =>{
                     console.log(err.message);
                     res.redirect('/');
                 }else{
-                    //sharp(req.files.picture.data).resize(200, 200).toBuffer().then((processedPicture)  =>{
+                    sharp(req.files.picture.data).resize(250, 250).png({quality: 90}).withMetadata().rotate().toBuffer().then((processedPicture)  =>{
 
                     
 
-                            User.findByIdAndUpdate(decoded.id, {picture: req.files.picture.data, picture_type: req.files.picture.mimetype}, function(error, user) {
+                            User.findByIdAndUpdate(decoded.id, {picture: processedPicture, picture_type: req.files.picture.mimetype}, function(error, user) {
                                 if (error) {
                                     console.log(error);
                                     res.redirect('../user/home');
@@ -209,7 +209,7 @@ module.exports.updatePicture_post = async (req, res) =>{
                                     res.redirect('../user/home');
                                 }
                             });
-                    //});
+                    });
                         
                     
                 }
@@ -275,13 +275,10 @@ module.exports.updateBio_post = async (req, res) =>{
     try{ 
         if(!user){
             res.redirect('../user/home');
-        }
-        else if(req.body.bio == ''){
-            res.redirect('../user/home');
         }else if(req.body.bio.length > 150){
             res.render('user/home', {user, errorBio: 'Bio cannot be contain more than 150 characters.'});
         }else{
-            User.findByIdAndUpdate(user.id, {bio: req.body.bio},  function(error, user) {
+            User.findByIdAndUpdate(user.id, {bio: req.body.bio.trim()},  function(error, user) {
                 if (error) {
                     res.render('user/home', {user, errorBio: 'Something went wrong! Please contact us.'});
                     console.log(error);

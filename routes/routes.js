@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
         isLogged = true;
     }
 
-    res.render('index', {isLogged});
+    res.render('other/index', {isLogged});
 });
 
 
@@ -36,5 +36,6 @@ router.get('/users/display/:id', requireAuth ,async (req, res) => {
     }
     
 })
+
 
 module.exports = router;

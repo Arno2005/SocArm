@@ -42,7 +42,7 @@ app.use('/user', usersRouter);
 
 //Error 404
 app.get('*', function(req, res){
-    res.render('not_found');
+    res.render('other/not_found');
 });
 
 //Database Connection
