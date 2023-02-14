@@ -33,7 +33,12 @@ const checkUser = (req, res, next) =>{
                 next();
             }else{
                 let user = await User.findById(decoded.id)
-                res.locals.user = user;
+                if(!user){
+                    res.cookie('jwt', '', {maxAge: 1});
+                }else{
+                    res.locals.user = user;
+                }
+                
                 next();
             }
         });
