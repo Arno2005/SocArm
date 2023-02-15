@@ -32,8 +32,8 @@ module.exports.createPost_post = async (req, res) => {
                 res.redirect('/user/login');
             }else{
                 if(!req.body.post_description){
-                    //res.redirect('/');
-                    res.send(req.files.post_media);
+                    res.redirect('/');
+                    //res.send(req.files.post_media);
                 }else{
                     const description = req.body.post_description;
                     const user_id = decoded.id;
