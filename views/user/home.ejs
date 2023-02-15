@@ -11,13 +11,10 @@
         background: #e8e7e7;
     }
 
-    .image a{
+    .image{
         background-color: black;
     }
-
-    .image img{
-        opacity: .5;
-    }
+    
 
     .image i{
         display: block;
@@ -26,6 +23,23 @@
         margin-left: 100px;
         transform: translate(-50%, -50%);
         color: #fff;
+        opacity: 0;
+    }
+
+    .image a{
+        transition: .5s;
+    }
+
+    .image i{
+        transition: .5s;
+    }
+
+    .image img:hover + i, .image i:hover{
+        opacity: 1;
+    }
+
+    .image a:hover{
+        opacity: .5;
     }
 </style>
 
@@ -72,8 +86,8 @@
         </div>    
        
         <div  class="d-flex align-items-center mt-5 mb-4 pt-3">
-            <div class="image me-5">
-                <a type="button" class="d-inline-block rounded-circle me-2" data-bs-toggle="modal" data-bs-target="#myModalPic">
+            <div class="image me-5 rounded-circle">
+                <a type="button" class="d-inline-block rounded-circle" data-bs-toggle="modal" data-bs-target="#myModalPic">
                     <img src="data:<%=user.picture_type%>;base64,<%=user.picture.toString('base64')%>" alt="" width="200" height="200" class="rounded-circle">
                     <i class="fs-3 far fa-edit"></i>
                 </a>
@@ -82,7 +96,7 @@
                     <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Change Profile Picrute</h5>
+                          <h5 class="modal-title" id="exampleModalLabel">Change Profile Picture</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form action="/user/update-picture" method="POST" enctype="multipart/form-data">
