@@ -4,15 +4,19 @@ var router = express.Router();
 const {requireAuth} = require('../middleware/authMiddleware')
 
 const User = require('../models/user');
+const Post = require('../models/post');
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     let isLogged = false;
     
     if(req.cookies.jwt){
         isLogged = true;
     }
 
-    res.render('other/index', {isLogged});
+    const posts = await Post.find({});
+    const users = await User.find({});
+
+    res.render('other/index', {isLogged, posts, users});
 });
 
 

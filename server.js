@@ -15,6 +15,7 @@ var cookieParser = require('cookie-parser');
 
 var indexRouter = require('./routes/routes');
 var usersRouter = require('./routes/user');
+var postsRouter = require('./routes/post');
 
 
 
@@ -39,6 +40,7 @@ app.get('*', checkUser);
 //Set Routees
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
+app.use('/post', postsRouter);
 
 //Error 404
 app.get('*', function(req, res){

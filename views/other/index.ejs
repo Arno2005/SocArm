@@ -15,16 +15,29 @@
 </style>
 
 
-<div class="center">
-    <div class="inner-center text-center">
-      <h2>Welcome to the First Armenian Social Media Platform</h2>
-      <h3 class="mb-4">This is a Test Project</h3>
-      <% if(isLogged){%>
-      
-        <a href="/user/home" class="btn btn-outline-secondary btn-lg rounded-pill"> Home </a>
-
-        <%} else {%>
-            <a href="/user/register" class="btn btn-outline-secondary btn-lg rounded-pill"> Register </a>
-            <% } %>
-    </div>
+<div class="container" style="background-color: #eee;">
+  <% if(typeof posts != undefined && posts){%>
+    <% posts.reverse().forEach(post => {  %>
+        <article class="d-flex justify-content-center">
+          <div class="post" style="width: 750px;">
+            <div class="profile-data mb-3 mt-3">
+                <% users.forEach(user => { %>
+                  <% if(user._id == post.user_id) {%>
+                    <img src="data:<%=user.picture_type%>;base64,<%=user.picture.toString('base64')%>" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <a class="text-dark" style="text-decoration: none;" href="/users/display/<%= user._id %>"> <strong><%= user.username %> </strong></a>
+                  <%}%>
+                <% }) %>
+              </div>
+              <% if(post.media_data != '') {%>
+                <img src="data:<%=post.media_type%>;base64,<%=post.media_data.toString('base64')%>" alt="post image" class="pb-3" style="max-height: 1000px; width: 750px;">
+              <% } %>
+              <div> <%= post.description %> </div>
+              <!-- <span class="text-info"> <%=//post.createdAt%> </span> -->
+                
+          </div>
+            
+        </article>
+        <hr>
+    <% }) 
+  }%>
   </div>

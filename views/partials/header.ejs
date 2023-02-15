@@ -26,6 +26,45 @@
                 <li class="nav-item">
                   <a class="nav-link" href="/user/login">Login</a>
                 </li>
+              <% }else{ %>
+                <li class="nav-item">
+                  <a type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#myModal">Add Post</a>
+
+                  <div class="modal fade" id="myModal">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Add A  Post</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="/post/create-post" method="POST" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                
+                              <div class="mb-3">
+
+                                <label for="post_media" class="form-label">Post Image</label>
+                                <input type="file" name="post_media" class="form-control" id="post_media" aria-describedby="post_mediaHelp">
+                                <small class="form-text test-muted">750px by 850px Recommened</small>
+
+                                <br>
+
+                                <label for="post_description" class="mt-3 form-label">Description</label>
+                                <textarea type="text" name="post_description" class="form-control" id="post_description" cols="53" style="resize: vertical;" aria-describedby="post_descriptionHelp"></textarea>
+                                <span class="text-danger form-text"> This Field Cannot Be Empty </span>
+                              
+                              
+                              </div>     
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-outline-success">Add Post</button>
+                            </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </li>
               <% } %>
             </ul>
           </div>
