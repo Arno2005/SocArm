@@ -18,8 +18,8 @@
 <div class="container" style="background-color: #eee;">
   <% if(typeof posts != undefined && posts){%>
     <% posts.reverse().forEach(post => {  %>
-        <article class="d-flex justify-content-center">
-          <div class="post" style="width: 750px;">
+        <article class="d-flex justify-content-center" style="max-width: 100%">
+          <div class="post" style="width: 750px; max-width: 100%">
             <div class="profile-data mb-3 mt-3">
                 <% users.forEach(user => { %>
                   <% if(user._id == post.user_id) {%>
@@ -29,7 +29,7 @@
                 <% }) %>
               </div>
               <% if(post.media_data != '') {%>
-                <img src="data:<%=post.media_type%>;base64,<%=post.media_data.toString('base64')%>" alt="post image" class="pb-3" style="max-height: 1000px; width: 750px;">
+                <img src="data:<%=post.media_type%>;base64,<%=post.media_data.toString('base64')%>" alt="post image" class="pb-3" style="max-height: 1000px; width: 750px; max-width: inherit;">
               <% } %>
               <div> <%= post.description %> </div>
               <!-- <span class="text-info"> <%=//post.createdAt%> </span> -->
