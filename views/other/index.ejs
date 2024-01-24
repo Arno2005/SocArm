@@ -29,10 +29,12 @@
                   <%}%>
                 <% }) %>
               </div>
-              <form  <% if(!user.is_admin && user._id != post.user_id){ %> style="display: none;" <% } %> action="/post/delete-post" method="POST">
-                <input type="hidden" name="id" value="<%= post._id %>">
-                <button type="submit" class="btn btn-outline-danger btn-start"> Delete </button>  
-              </form>
+              <%if(user != null){%>
+                <form  <% if(!user.is_admin && user._id != post.user_id){ %> style="display: none;" <% } %> action="/post/delete-post" method="POST">
+                  <input type="hidden" name="id" value="<%= post._id %>">
+                  <button type="submit" class="btn btn-outline-danger btn-start"> Delete </button>  
+                </form>
+              <%}%>
               
             </div>
             
