@@ -14,4 +14,6 @@ const postController = require('../controllers/postController.js')
 
 router.post('/create-post',  requireAuth, postController.createPost_post);
 
+router.post('/delete-post',  requireAuth, postController.deletePost_post);
+
 module.exports = router;

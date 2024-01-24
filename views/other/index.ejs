@@ -15,29 +15,80 @@
 </style>
 
 
-<div class="container" style="background-color: #eee;">
-  <% if(typeof posts != undefined && posts){%>
+<div class="container pt-2" style="background-color: #eee; min-height: 92vh;">
+  <% if(typeof posts != undefined && posts && posts.length != 0){%>
     <% posts.reverse().forEach(post => {  %>
-        <article class="d-flex justify-content-center" style="max-width: 100%">
+        <article class="d-flex justify-content-center mb-2" style="max-width: 100%">
           <div class="post" style="width: 750px; max-width: 100%">
-            <div class="profile-data mb-3 mt-3">
+            <div class="d-flex justify-content-between align-items-center pb-2 pt-1">
+              <div class="profile-data">
                 <% users.forEach(user => { %>
                   <% if(user._id == post.user_id) {%>
-                    <img src="data:<%=user.picture_type%>;base64,<%=user.picture.toString('base64')%>" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <img loading="lazy" src="data:<%=user.picture_type%>;base64,<%=user.picture.toString('base64')%>" alt="" width="32" height="32" class="rounded-circle me-2">
                     <a class="text-dark" style="text-decoration: none;" href="/users/display/<%= user._id %>"> <strong><%= user.username %> </strong></a>
                   <%}%>
                 <% }) %>
               </div>
+              <form  <% if(!user.is_admin && user._id != post.user_id){ %> style="display: none;" <% } %> action="/post/delete-post" method="POST">
+                <input type="hidden" name="id" value="<%= post._id %>">
+                <button type="submit" class="btn btn-outline-danger btn-start"> Delete </button>  
+              </form>
+              
+            </div>
+            
               <% if(post.media_data != '') {%>
-                <img src="data:<%=post.media_type%>;base64,<%=post.media_data.toString('base64')%>" alt="post image" class="pb-3" style="max-height: 1000px; width: 750px; max-width: inherit;">
+                <img loading="lazy" src="<%=post.media_data%>" alt="post image" class="pb-3 mt-1" style="max-height: 1000px; width: 750px; max-width: inherit;">
               <% } %>
               <div> <%= post.description %> </div>
-              <!-- <span class="text-info"> <%=//post.createdAt%> </span> -->
+              <%
+              let month = '';
+              switch (post.createdAt.getMonth()) {
+                case 0:
+                  month = 'Jan';
+                  break;
+                case 1:
+                  month = 'Feb';
+                  break;
+                case 2:
+                  month = 'Mar';
+                  break;
+                case 3:
+                  month = 'Apr';
+                  break;
+                case 4:
+                  month = 'May';
+                  break;
+                case 5:
+                  month = 'Jun';
+                  break;
+                case 6:
+                  month = 'Jul';
+                  break;
+                case 7:
+                  month = 'Aug';
+                  break;
+                case 8:
+                  month = 'Sept';
+                  break;
+                case 9:
+                  month = 'Oct';
+                  break;
+                case 10:
+                  month = 'Nov';
+                  break;
+                case 11:
+                  month = 'Dec';
+                  break;
+                default:
+                  break;
+              }
+              %>
+              <small class="d-inline-block text-muted mt-2 mb-1"> <%=`${month} ${post.createdAt.getDate()}, ${post.createdAt.getFullYear()}`  %> </small>
                 
           </div>
             
         </article>
-        <hr>
+        <hr class="mt-0">
     <% }) 
-  }%>
+  }else{%> <p class="text-center text-dark pt-3 pb-3 h4">No Posts Yet!</p> <% } %>
   </div>

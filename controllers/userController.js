@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Post = require("../models/post");
 
 //jwt token
 const jwt = require("jsonwebtoken");
@@ -347,10 +348,11 @@ module.exports.deleteAcc_post = async (req, res) =>{
                     if(err || req.body.id != decoded.id){
                         res.render('user/delete-acc', {user, error: 'Could not verify the user!'});
                     }else{
-                        User.findByIdAndDelete(decoded.id, function(error, userFind) {
+                        User.findByIdAndDelete(decoded.id, async function(error, userFind) {
                             if (error) {
                                 res.render('user/delete-acc', {user, error: 'Could not verify the user!'});
                             }else{
+                                await Post.deleteMany({user_id: userFind._id});
                                 res.cookie('jwt', '', {maxAge: 1});
                                 res.redirect('login');
                             }

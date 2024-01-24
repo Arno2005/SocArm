@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 //image resize
 const sharp = require('sharp');
+const fs = require('fs');
 
 const path = require('path');
 
@@ -17,7 +18,7 @@ if(process.env.NODE_ENV !== 'production'){
 	dotenv.config();
 }
 
-//secters
+//secrets
 const userToken = process.env.SECRET;
 const emailSecret = process.env.EMAIL_SECRET;
 
@@ -33,7 +34,6 @@ module.exports.createPost_post = async (req, res) => {
             }else{
                 if(!req.body.post_description){
                     res.redirect('/');
-                    //res.send(req.files.post_media);
                 }else{
                     const description = req.body.post_description;
                     const user_id = decoded.id;
@@ -49,17 +49,21 @@ module.exports.createPost_post = async (req, res) => {
                         });
 
                         if(req.files && imageMimeTypes.includes(req.files.post_media.mimetype)){
+                            
+                            let media_name = req.files.post_media.name.split('.');
+                            let ext = media_name[media_name.length - 1];
+
                             media_data = req.files.post_media.data; 
                             media_type = req.files.post_media.mimetype;
 
-                            sharp(media_data).resize(750, 850).jpeg({quality: 60}).rotate().toBuffer().then((processedPicture)  =>{
-                                Post.findByIdAndUpdate(post._id, {media_data: processedPicture, media_type : 'image/jpeg'} ,function (err, post){
+                            sharp(media_data).resize(750, 850).jpeg({quality: 60}).rotate().toFile(path.resolve('./public/posts/' + post._id + '.jpeg') , (err, sharp)  =>{
+                                Post.findByIdAndUpdate(post._id, {media_data: '/posts/' + post._id + '.jpeg', media_type : 'image/jpeg'} ,function (err, post){
                                     if(err){
                                         console.log(err);
                                     }
                                 });
 
-                            }).catch( err => { console.log(err) });
+                            });
                             
                         }
 
@@ -73,6 +77,42 @@ module.exports.createPost_post = async (req, res) => {
                 
 
                 }    
+            }
+            
+        })
+        
+    }
+}
+
+module.exports.deletePost_post = async (req, res) => {
+    const token = req.cookies.jwt
+    if(!token){
+        res.redirect('/user/login');
+    }else{
+        jwt.verify(token, userToken, async (err, decoded) => {
+            if(err){
+                console.log(err);
+                res.redirect('/user/login');
+            }else{
+                let post = await Post.findById(req.body.id);
+                if(post.media_data != ""){
+                    fs.unlink('./public/posts/' + req.body.id + '.jpeg', async (err) => {
+                        if(err){
+                            // Handle specific error if any
+                            if(err.code === 'ENOENT'){
+                                console.error('File does not exist.');
+                            }else{
+                                throw err;
+                            }
+                        }else{
+                            await Post.deleteOne({ _id: req.body.id });
+                            res.redirect('/');
+                        }
+                    });
+                }else{
+                    await Post.deleteOne({ _id: req.body.id });
+                    res.redirect('/');
+                }
             }
             
         })
