@@ -30,19 +30,19 @@ const postSchema = new mongoose.Schema({
 );
 
 
-postSchema.pre('deleteMany', async function(next) {
-    let deletedData =await mongoose.model('post', postSchema).find(this._conditions).lean();
-    deletedData.forEach(el => {
-        fs.unlink(path.resolve('./public/' + el.media_data), (err) => {
-            if(err){
-                console.log('couldnt delete image from server');
-                console.log(err);
-            }
-        });    
-    });
+// postSchema.pre('deleteMany', async function(next) {
+//     let deletedData =await mongoose.model('post', postSchema).find(this._conditions).lean();
+//     deletedData.forEach(el => {
+//         fs.unlink(path.resolve('./public/' + el.media_data), (err) => {
+//             if(err){
+//                 console.log('couldnt delete image from server');
+//                 console.log(err);
+//             }
+//         });    
+//     });
     
 
-    next();
-});
+//     next();
+// });
 
 module.exports = mongoose.model('post', postSchema);

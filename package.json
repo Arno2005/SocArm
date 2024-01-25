@@ -10,6 +10,7 @@
   "author": "arno",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1543.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "cookie-parser": "^1.4.6",

@@ -9,14 +9,27 @@ const bcrypt = require('bcrypt');
 const sharp = require('sharp');
 const fs = require('fs');
 
-const path = require('path');
-
-
-
+//env variables
 if(process.env.NODE_ENV !== 'production'){
 	const dotenv = require('dotenv');
 	dotenv.config();
 }
+
+//aws
+const AWS = require('aws-sdk');
+
+
+const path = require('path');
+
+
+// Configure AWS
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+    region: process.env.AWS_BUCKET_REGION,
+});
+
+const s3 = new AWS.S3();
 
 //secrets
 const userToken = process.env.SECRET;
@@ -56,14 +69,48 @@ module.exports.createPost_post = async (req, res) => {
                             media_data = req.files.post_media.data; 
                             media_type = req.files.post_media.mimetype;
 
-                            sharp(media_data).resize(750, 850).jpeg({quality: 60}).rotate().toFile(path.resolve('./public/posts/' + post._id + '.jpeg') , (err, sharp)  =>{
-                                Post.findByIdAndUpdate(post._id, {media_data: '/posts/' + post._id + '.jpeg', media_type : 'image/jpeg'} ,function (err, post){
-                                    if(err){
-                                        console.log(err);
+                            // sharp(media_data).resize(750, 850).jpeg({quality: 60}).rotate().toFile(path.resolve('./public/posts/' + post._id + '.jpeg') , (err, sharp)  =>{
+                            //     Post.findByIdAndUpdate(post._id, {media_data: '/posts/' + post._id + '.jpeg', media_type : 'image/jpeg'} ,function (err, post){
+                            //         if(err){
+                            //             console.log(err);
+                            //         }
+                            //     });
+
+                            // });
+
+                            const resizedImage = sharp(media_data).resize(750, 850).jpeg({quality: 60}).rotate();
+
+                            const filename = post._id + '.jpeg';
+
+                            const params = {
+                                Bucket: process.env.AWS_BUCKET_NAME,
+                                Key: filename,
+                                Body: resizedImage,
+                                ContentType: media_type,
+                                ACL: 'public-read',
+                              };
+                          
+                              try{
+                                await s3.upload(params).promise();
+                                s3.getSignedUrl('getObject', {
+                                    Bucket: process.env.AWS_BUCKET_NAME,
+                                    Key: filename,
+                                }, (err, url) => {
+                                    if (err) {
+                                      console.error('Error generating pre-signed URL:', err);
+                                      return res.status(500).send('Internal Server Error');
+                                    }else{
+                                        Post.findByIdAndUpdate(post._id, {media_data: url, media_type : 'image/jpeg'} ,function (err, post){
+                                            if(err){
+                                                console.log(err);
+                                            }
+                                        });
                                     }
                                 });
-
-                            });
+                                
+                              }catch(err){
+                                console.log(err);
+                              }
                             
                         }
 
@@ -96,19 +143,35 @@ module.exports.deletePost_post = async (req, res) => {
             }else{
                 let post = await Post.findById(req.body.id);
                 if(post.media_data != ""){
-                    fs.unlink('./public/posts/' + req.body.id + '.jpeg', async (err) => {
-                        if(err){
-                            // Handle specific error if any
-                            if(err.code === 'ENOENT'){
-                                console.error('File does not exist.');
-                            }else{
-                                throw err;
-                            }
-                        }else{
-                            await Post.deleteOne({ _id: req.body.id });
-                            res.redirect('/');
+                    // fs.unlink('./public/posts/' + req.body.id + '.jpeg', async (err) => {
+                    //     if(err){
+                    //         // Handle specific error if any
+                    //         if(err.code === 'ENOENT'){
+                    //             console.error('File does not exist.');
+                    //         }else{
+                    //             throw err;
+                    //         }
+                    //     }else{
+                    //         await Post.deleteOne({ _id: req.body.id });
+                    //         res.redirect('/');
+                    //     }
+                    // });
+
+                    const params = {
+                        Bucket: process.env.AWS_BUCKET_NAME,
+                        Key: req.body.id + ".jpeg",
+                    };
+                    
+                      // Delete the file from the S3 bucket
+                      s3.deleteObject(params, async (err, data) => {
+                        if (err) {
+                          console.error('Error deleting file from S3:', err);
+                          return res.status(500).send('Internal Server Error');
                         }
-                    });
+                        await Post.deleteOne({ _id: req.body.id });
+                        res.redirect('/');
+                      });
+
                 }else{
                     await Post.deleteOne({ _id: req.body.id });
                     res.redirect('/');
