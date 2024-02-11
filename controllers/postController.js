@@ -1,4 +1,3 @@
-const User = require("../models/user");
 const Post = require("../models/post");
 
 //jwt token
@@ -33,7 +32,6 @@ const s3 = new AWS.S3();
 
 //secrets
 const userToken = process.env.SECRET;
-const emailSecret = process.env.EMAIL_SECRET;
 
 module.exports.createPost_post = async (req, res) => {
     const token = req.cookies.jwt
@@ -69,15 +67,6 @@ module.exports.createPost_post = async (req, res) => {
                             media_data = req.files.post_media.data; 
                             media_type = req.files.post_media.mimetype;
 
-                            // sharp(media_data).resize(750, 850).jpeg({quality: 60}).rotate().toFile(path.resolve('./public/posts/' + post._id + '.jpeg') , (err, sharp)  =>{
-                            //     Post.findByIdAndUpdate(post._id, {media_data: '/posts/' + post._id + '.jpeg', media_type : 'image/jpeg'} ,function (err, post){
-                            //         if(err){
-                            //             console.log(err);
-                            //         }
-                            //     });
-
-                            // });
-
                             const resizedImage = sharp(media_data).resize(750, 850).jpeg({quality: 60}).rotate();
 
                             const filename = post._id + '.jpeg';
@@ -88,23 +77,14 @@ module.exports.createPost_post = async (req, res) => {
                                 Body: resizedImage,
                                 ContentType: media_type,
                                 ACL: 'public-read',
-                              };
+                            };
                           
                               try{
                                 await s3.upload(params).promise();
-                                s3.getSignedUrl('getObject', {
-                                    Bucket: process.env.AWS_BUCKET_NAME,
-                                    Key: filename,
-                                }, (err, url) => {
-                                    if (err) {
-                                      console.error('Error generating pre-signed URL:', err);
-                                      return res.status(500).send('Internal Server Error');
-                                    }else{
-                                        Post.findByIdAndUpdate(post._id, {media_data: url, media_type : 'image/jpeg'} ,function (err, post){
-                                            if(err){
-                                                console.log(err);
-                                            }
-                                        });
+
+                                Post.findByIdAndUpdate(post._id, {media_type : 'image/jpeg'} ,function (err, post){
+                                    if(err){
+                                        console.log(err);
                                     }
                                 });
                                 
@@ -142,35 +122,22 @@ module.exports.deletePost_post = async (req, res) => {
                 res.redirect('/user/login');
             }else{
                 let post = await Post.findById(req.body.id);
-                if(post.media_data != ""){
-                    // fs.unlink('./public/posts/' + req.body.id + '.jpeg', async (err) => {
-                    //     if(err){
-                    //         // Handle specific error if any
-                    //         if(err.code === 'ENOENT'){
-                    //             console.error('File does not exist.');
-                    //         }else{
-                    //             throw err;
-                    //         }
-                    //     }else{
-                    //         await Post.deleteOne({ _id: req.body.id });
-                    //         res.redirect('/');
-                    //     }
-                    // });
+                if(post.media_type != ""){
 
                     const params = {
                         Bucket: process.env.AWS_BUCKET_NAME,
                         Key: req.body.id + ".jpeg",
                     };
                     
-                      // Delete the file from the S3 bucket
-                      s3.deleteObject(params, async (err, data) => {
+                    // Delete the file from the S3 bucket
+                    s3.deleteObject(params, async (err, data) => {
                         if (err) {
                           console.error('Error deleting file from S3:', err);
                           return res.status(500).send('Internal Server Error');
                         }
                         await Post.deleteOne({ _id: req.body.id });
                         res.redirect('/');
-                      });
+                    });
 
                 }else{
                     await Post.deleteOne({ _id: req.body.id });
